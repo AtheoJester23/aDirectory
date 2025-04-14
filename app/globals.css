@@ -1,4 +1,9 @@
+@import url("https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+
 @import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   --background: #ffffff;
@@ -12,13 +17,102 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
   }
-}
+} */
 
+@layer utilities {
+  .card_grid {
+    @apply grid md:grid-cols-3 sm:grid-cols-2 gap-5;
+  }
+
+  .flex-between {
+    @apply flex justify-between items-center;
+  }
+
+  .text-30-extrabold {
+    @apply text-[30px] font-extrabold text-white;
+  }
+
+  .pattern {
+    background-image: linear-gradient(
+            to right,
+            transparent 49.5%,
+            rgba(251, 232, 67, 0.2) 49.5%,
+            rgba(251, 232, 67, 0.6) 50.5%,
+            transparent 50.5%
+    );
+    background-size: 5% 100%;
+    background-position: center;
+    background-repeat: repeat-x;
+  }
+
+  .pink_container {
+    @apply w-full min-h-[530px] flex justify-center items-center flex-col py-10 px-6;
+    
+    background-color: #EE2B69;
+    
+    background-image: linear-gradient(
+      to right,
+      transparent 49.5%,
+      rgba(251, 232, 67, 0.2) 49.5%,
+      rgba(251, 232, 67, 0.6) 50.5%,
+      transparent 50.5%
+    );
+    background-size: 5% 100%;
+    background-position: center;
+    background-repeat: repeat-x;
+  }
+
+  .heading{
+    font-family: var(--font-work-sans);
+    @apply uppercase bg-black px-6 py-3 font-extrabold text-white sm:text-[54px] sm:leading-[64px] text-[36px] leading-[46px] text-center my-5
+  }
+
+  .sub-heading {
+    font-family: var(--font-work-sans);
+    @apply font-medium text-[20px] text-white max-w-2xl text-center break-words;
+  }  
+
+  .search-form {
+    @apply max-w-3xl w-full min-h-[80px] bg-white border-[5px] border-black rounded-[80px] text-[24px] mt-8 px-5 flex flex-row items-center gap-5;
+  }
+
+  .search-btn {
+    @apply size-[50px] rounded-full bg-black flex justify-center items-center;
+  }
+
+  .section_container {
+    font-family: var(--font-work-sans);
+    @apply px-6 py-10 max-w-7xl mx-auto;
+  }
+
+  .search-input {
+    font-family: var(--font-work-sans);
+    @apply flex-1 font-bold placeholder:font-semibold placeholder:text-black w-full h-auto outline-none text-black;
+  }
+
+  .startup-card {
+    @apply bg-white border-[5px] border-black py-6 px-5 rounded-[22px] hover:border-pink-500 transition-all duration-200 hover:shadow-xl hover:bg-pink-700 text-black hover:text-white;
+  }
+
+  .startup-card_desc {
+    font-family: var(--font-work-sans);
+    @apply font-normal text-[16px] line-clamp-2 my-3 break-all;
+  }
+
+  .startup-card_img {
+    @apply w-full h-[164px] rounded-[10px] object-cover;
+  }
+
+  .startup-card_btn {
+    font-family: var(--font-work-sans);
+    @apply rounded-full bg-black font-medium text-[16px] text-white px-5 py-3;
+  }
+}
 body {
   background: var(--background);
   color: var(--foreground);
