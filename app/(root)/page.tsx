@@ -11,8 +11,10 @@ export default async function Home({searchParams}: {
 
   const query = (await searchParams).query
 
+  const params = {search: query || null}
+
   // live data fetching
-  const {data: posts} = await sanityFetch({query: STARTUPS_QUERY});
+  const {data: posts} = await sanityFetch({query: STARTUPS_QUERY, params});
 
   // not live data fetching:
   // const posts = await client.fetch(STARTUPS_QUERY)
@@ -39,6 +41,7 @@ export default async function Home({searchParams}: {
   //     title: "Music Producing"
   //   }
   // ]
+
 
   return (
     <>
