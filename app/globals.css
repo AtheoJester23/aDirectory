@@ -1,20 +1,16 @@
 @import url("https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap");
 
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@layer base {
+  :root {
+      --radius: 0.5rem;
+  }
 }
 
 /* @media (prefers-color-scheme: dark) {
@@ -27,6 +23,15 @@
 @layer utilities {
   .card_grid {
     @apply grid md:grid-cols-3 sm:grid-cols-2 gap-5;
+  }
+
+  .category-tag {
+    font-family: var(--font-work-sans);
+    @apply font-medium text-[16px] bg-pink-100 px-4 py-2 rounded-full;
+  }
+
+  .divider {
+    @apply border-dotted bg-zinc-400 max-w-4xl my-10 mx-auto;
   }
 
   .flex-between {
@@ -72,6 +77,11 @@
     @apply uppercase bg-black px-6 py-3 font-extrabold text-white sm:text-[54px] sm:leading-[64px] text-[36px] leading-[46px] text-center my-5
   }
 
+  .no-result {
+    font-family: var(--font-work-sans);
+    @apply text-black text-sm font-normal;
+  }
+
   .sub-heading {
     font-family: var(--font-work-sans);
     @apply font-medium text-[20px] text-white max-w-2xl text-center break-words;
@@ -112,9 +122,11 @@
     font-family: var(--font-work-sans);
     @apply rounded-full bg-black font-medium text-[16px] text-white px-5 py-3;
   }
-}
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+
+  .tag {
+    font-family: var(--font-work-sans);
+    @apply bg-yellow-500 px-6 py-3 font-bold rounded-sm uppercase relative;
+  }
+
+
 }
