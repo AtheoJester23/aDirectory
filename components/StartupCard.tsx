@@ -4,9 +4,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react'
 import { Button } from './ui/button';
+import { Startup, Author } from '@/sanity/types';
 
-const StartupCard = ({prop}: {prop: testing}) => {
-  const {_createdAt, views, author: { _id: authorId, name}, title, _id, description, image, category} = prop
+export type StartupTypeCard = Omit<Startup, "author"> & {author?: Author};
+
+const StartupCard = ({prop}: {prop: StartupTypeCard}) => {
+  const {_createdAt, views, author, title, _id, description, image, category} = prop
 
   console.log(image);
 
@@ -23,9 +26,9 @@ const StartupCard = ({prop}: {prop: testing}) => {
 
         <div className="flex-between mt-5 gap5">
           <div className="flex-1">
-            <Link href={`/user/${authorId}`}>
+            <Link href={`/user/${author?.id}`}>
               <p className="text-[16px] font-bold line-clamp-1">
-                {name}
+                {author?.name}
               </p>
             </Link>
             <Link href={`/startup/${_id}`}>
@@ -35,7 +38,7 @@ const StartupCard = ({prop}: {prop: testing}) => {
             </Link>
           </div>
 
-          <Link href={`/user/${authorId}`}>
+          <Link href={`/user/${author?.id}`}>
             <Image src="https://placehold.co/48x48" alt='placeholder' width={48} height={48} className='rounded-full'/>
           </Link>
         </div>
@@ -49,7 +52,7 @@ const StartupCard = ({prop}: {prop: testing}) => {
         </Link>
 
         <div className="flex-between gap-3 mt-5">
-          <Link href={`/?query=${category.toLowerCase()}`}>
+          <Link href={`/?query=${category?.toLowerCase()}`}>
             <p className='text-[16px] text-medium'>
               {category}
             </p>

@@ -1,5 +1,8 @@
-import StartupCard from "@/components/StartupCard";
+import StartupCard, { StartupTypeCard } from "@/components/StartupCard";
 import SearchForm from "../../components/SearchForm";
+import { client } from "@/sanity/lib/client";
+import { STARTUPS_QUERY } from "@/sanity/lib/queries";
+import { Author, Startup } from "@/sanity/types";
 
 export default async function Home({searchParams}: {
   searchParams: Promise<{query ?: string}>
@@ -7,27 +10,29 @@ export default async function Home({searchParams}: {
 
   const query = (await searchParams).query
 
-  const posts = [
-    {
-      _createdAt: new Date(),
-      views: 55,
-      author: {_id: 1, name: "Somebody"},
-      _id: 1,
-      description: "Testing description only...",
-      image: "https://images.unsplash.com/photo-1627773755683-dfcf2774596a?q=80&w=1452&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      category: "Music",
-      title: "Music Producing"
-    },{
-      _createdAt: new Date(),
-      views: 25,
-      author: {_id: 2, name: "Atheo"},
-      _id: 2,
-      description: "Only a Testing description",
-      image: "https://images.unsplash.com/photo-1627773755683-dfcf2774596a?q=80&w=1452&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      category: "Music",
-      title: "Music Producing"
-    }
-  ]
+  const posts = await client.fetch(STARTUPS_QUERY)
+
+  // const posts = [
+  //   {
+  //     _createdAt: new Date(),
+  //     views: 55,
+  //     author: {_id: 1, name: "Somebody"},
+  //     _id: 1,
+  //     description: "Testing description only...",
+  //     image: "https://images.unsplash.com/photo-1627773755683-dfcf2774596a?q=80&w=1452&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  //     category: "Music",
+  //     title: "Music Producing"
+  //   },{
+  //     _createdAt: new Date(),
+  //     views: 25,
+  //     author: {_id: 2, name: "Atheo"},
+  //     _id: 2,
+  //     description: "Only a Testing description",
+  //     image: "https://images.unsplash.com/photo-1627773755683-dfcf2774596a?q=80&w=1452&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  //     category: "Music",
+  //     title: "Music Producing"
+  //   }
+  // ]
 
   return (
     <>
@@ -49,7 +54,7 @@ export default async function Home({searchParams}: {
 
         <ul className="mt-7 card_grid">
           {posts?.length > 0 ? (
-            posts.map((item: testing) => (
+            posts.map((item: StartupTypeCard) => (
               <StartupCard key={item?._id} prop={item}/>
             ))
           ) : (
