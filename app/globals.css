@@ -128,5 +128,16 @@
     @apply bg-yellow-500 px-6 py-3 font-bold rounded-sm uppercase relative;
   }
 
+  .view_skeleton {
+    @apply bg-zinc-400 h-10 w-24 rounded-lg fixed bottom-3 right-3;
+  }
 
+  .view-container {
+    @apply flex justify-end items-center mt-5 fixed bottom-3 right-3;
+  }
+
+  .view-text {
+    font-family: var(--font-work-sans);
+    @apply font-medium text-[16px] bg-pink-100 px-4 py-2 rounded-lg capitalize;
+  }
 }
