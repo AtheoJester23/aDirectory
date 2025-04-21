@@ -15,7 +15,7 @@ const Navbar = async () => {
                     <Image src="/logo3.png" alt='logo' width="170" height="32"/>
                 </Link>
 
-                <div className="flex items-center gap-5 text-light">
+                <div className="flex items-center gap-5 text-white">
                     <AuthButtons 
                         isAuthenticated={!!session?.user}
                         userId={session?.user?.id} 
