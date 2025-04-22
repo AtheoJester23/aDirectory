@@ -19,6 +19,8 @@ const page = async ({params}: {params: Promise<{id: string}>}) => {
 
   const parsedContent = md.render(post?.pitch || null);
 
+  console.log("This is the id: ", post.author);
+
   return (
     <div>
       <section className="pink_container !min-h-[230px]">
