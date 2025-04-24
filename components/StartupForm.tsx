@@ -9,12 +9,15 @@ import { formSchema } from '@/lib/validation';
 import { Button } from './ui/button';
 import { z } from 'zod'
 import { toast } from 'sonner';
-
+import { createPitch } from '@/lib/actions';
+import { useRouter } from 'next/navigation';
 
 const StartupForm = () => {
   const [errors, setErrors] = useState<Record<string,string>>({});
   const [pitch, setPitch] = useState("**Testing, test!!!**")
   
+  const router = useRouter()
+
   const handleFormSubmit = async (prevState: any, formData: FormData) => {
     try {
       const formValues = {
@@ -33,9 +36,9 @@ const StartupForm = () => {
         description: "Your startup pitch has been uploaded"
       })
 
-      // const result = await createIdea(prevState, formData, pitch);
+      const result = await createPitch(prevState, formData, pitch);
 
-      // console.log(result)
+      router.push(`/startup/${result._id}`)
     } catch (error) {
       if(error instanceof z.ZodError){
         const fieldErrors = error.flatten().fieldErrors;
