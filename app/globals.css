@@ -43,7 +43,9 @@
   }
 
   .text-30-extrabold {
-    @apply text-[30px] font-extrabold text-white;
+    @apply text-[30px] font-extrabold;
+
+    color: rgba(255, 255, 255, 0.8)
   }
 
   .pattern {
@@ -62,7 +64,7 @@
   .pink_container {
     @apply w-full min-h-[530px] flex justify-center items-center flex-col py-10 px-6;
     
-    background-color: #EE2B69;
+    background-color: rgb(60, 196, 124);
     
     background-image: linear-gradient(
       to right,
@@ -178,7 +180,7 @@
   }
 
   .view-container {
-    @apply flex justify-end items-center mt-5 fixed bottom-3 right-3;
+    @apply flex justify-end items-center mt-5 fixed bottom-18 right-10;
   }
 
   .view-text {
