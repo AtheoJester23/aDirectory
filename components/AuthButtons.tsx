@@ -1,26 +1,33 @@
 "use client"; // Ensures this is a client component
 
+import { CirclePlus, LogOut} from "lucide-react";
 import { signIn, signOut } from "next-auth/react";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
-export default function AuthButtons({ isAuthenticated, userId, userName }: { 
+export default function AuthButtons({ isAuthenticated, userId, sessionImg }: { 
     isAuthenticated: boolean;
     userId?: string;
-    userName?: string;
+    sessionImg: string;
 }) {
     return (
         <>
             {isAuthenticated ? (
                 <>
                     <a href="/startup/create">
-                        <span>Create</span>
+                        <span className="max-sm:hidden">Create</span>
+                        <CirclePlus className="size-6 sm:hidden"/>
                     </a>
 
                     <button onClick={() => signOut({redirectTo: "/"})} className="text-white hover:cursor-pointer">
-                        Logout
+                        <span className="max-sm:hidden">Logout</span>
+                        <LogOut className="size-6 sm:hidden"/>
                     </button>
 
                     <a href={`/user/${userId}`}>
-                        <span>{userName}</span>
+                        <Avatar className="size-10">
+                            <AvatarImage src={sessionImg}/>
+                            <AvatarFallback>AV</AvatarFallback>
+                        </Avatar>
                     </a>
                 </>
             ) : (

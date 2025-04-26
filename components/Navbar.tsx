@@ -8,6 +8,8 @@ import AuthButtons from './AuthButtons'
 const Navbar = async () => {
     const session = await auth();
 
+    console.log("This is the whole session: ",session)
+
     return (
         <header className='px-5 py-3 bg-black shadow-sm font-work-sans'>
             <nav className="flex justify-between items-center px-5 py-2">
@@ -18,8 +20,8 @@ const Navbar = async () => {
                 <div className="flex items-center gap-5 text-white">
                     <AuthButtons 
                         isAuthenticated={!!session?.user}
-                        userId={session?.user?.id} 
-                        userName={session?.user?.name}
+                        userId={session?.id} 
+                        sessionImg={session?.user?.image}
                     />
                 </div>
             </nav>

@@ -17,6 +17,27 @@ export const STARTUPS_QUERY = defineQuery(`*[_type == "startup" && defined(slug.
     image
 }`)
 
+export const STARTUPS_BY_AUTHOR_QUERY = defineQuery(`*[_type == "startup" && author._ref == $id] | order(_createdAt desc){
+  _id, 
+  title, 
+  slug, 
+  _createdAt, 
+  author -> {
+    _id,
+    name, 
+    image,
+    bio
+  }, 
+  views, 
+  description, 
+  category, 
+  image
+}`)
+
+export const AUTHORS_QUERY = defineQuery(`*[_type == "author" && id == $id]{
+      _id, id, name, username, email, image, bio
+}`)
+
 export const STARTUP_BY_ID_QUERY = defineQuery(`*[_type == "startup" && _id == $id][0]{
     _id, 
     title, 

@@ -11,8 +11,6 @@ export type StartupTypeCard = Omit<Startup, "author"> & {author?: Author};
 const StartupCard = ({prop}: {prop: StartupTypeCard}) => {
   const {_createdAt, views, author, title, _id, description, image, category} = prop
 
-  console.log(image);
-
     return (
     <li className='startup-card shadow-xs'>
         <div className="flex-between">
@@ -26,7 +24,7 @@ const StartupCard = ({prop}: {prop: StartupTypeCard}) => {
 
         <div className="flex-between mt-5 gap5">
           <div className="flex-1">
-            <Link href={`/user/${author?.id}`}>
+            <Link href={`/user/${author?._id}`}>
               <p className="text-[16px] font-bold line-clamp-1">
                 {author?.name}
               </p>
@@ -38,8 +36,8 @@ const StartupCard = ({prop}: {prop: StartupTypeCard}) => {
             </Link>
           </div>
 
-          <Link href={`/user/${author?.id}`}>
-            <Image src="https://placehold.co/48x48" alt='placeholder' width={48} height={48} className='rounded-full'/>
+          <Link href={`/user/${author?._id}`}>
+            <Image src={author?.image!} alt={author?.name!} width={48} height={48} className='rounded-full'/>
           </Link>
         </div>
 
