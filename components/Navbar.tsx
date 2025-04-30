@@ -11,10 +11,10 @@ const Navbar = async () => {
     console.log("This is the whole session: ",session)
 
     return (
-        <header className='px-5 py-3 bg-black shadow-sm font-work-sans'>
+        <header className='px-5 py-3 bg-[rgb(10,10,10)] shadow-sm font-work-sans'>
             <nav className="flex justify-between items-center px-5 py-2">
                 <Link href="/">
-                    <Image src="/A_Directory_Logo.png" alt='logo' width="170" height="32"/>
+                    <Image src="/A_Directory_Logo.png" alt='logo' width="158" height="20"/>
                 </Link>
 
                 <div className="flex items-center gap-5 text-white">

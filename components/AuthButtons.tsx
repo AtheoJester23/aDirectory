@@ -14,7 +14,7 @@ export default function AuthButtons({ isAuthenticated, userId, sessionImg }: {
             {isAuthenticated ? (
                 <>
                     <a href="/startup/create">
-                        <span className="max-sm:hidden">Create</span>
+                        <span className="max-sm:hidden text-[rgb(60,196,124)]">Create</span>
                         <CirclePlus className="size-6 sm:hidden"/>
                     </a>
 

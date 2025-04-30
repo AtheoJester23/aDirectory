@@ -19,8 +19,8 @@ const SearchForm = ({query}: {query ?: string}) => {
         <div className='flex gap-2'>
           {query && <SearchFormReset/>}
 
-          <button type='submit' className='search-btn text-white !important hover:cursor-pointer'>
-            <Search className='size-5'/>
+          <button type='submit' className='search-btn text-white !important hover:cursor-pointer hover:border-2 hover:border-[rgb(29,185,84)] duration-50'>
+            <Search className='size-4 hover:text-[rgb(29,185,84)] duration-200'/>
           </button>
         </div>
     </Form>

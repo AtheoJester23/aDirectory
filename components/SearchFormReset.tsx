@@ -13,8 +13,8 @@ function SearchFormReset() {
 
   return (
     <button type='reset' onClick={reset}>
-        <Link href="/" className='search-btn text-white !important'>
-            <X className='size-5'/>
+        <Link href="/" className='search-btn text-white !important hover:border-2 hover:border-red-500 duration-50'>
+            <X className='size-5 hover:text-red-500 hover:border-red-500 duration-200'/>
         </Link>
     </button>
   )

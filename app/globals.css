@@ -13,6 +13,9 @@
   }
 }
 
+body{
+  background-color: rgb(18,18,18);
+}
 /* @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
@@ -31,11 +34,11 @@
 
   .category-tag {
     font-family: var(--font-work-sans);
-    @apply font-medium text-[16px] bg-pink-100 px-4 py-2 rounded-full;
+    @apply font-medium text-[16px] text-[rgb(10,10,10)] bg-[rgb(29,185,84)] px-4 py-2 rounded-full;
   }
 
   .divider {
-    @apply border-dotted bg-zinc-400 max-w-4xl my-10 mx-auto;
+    @apply border-dashed bg-zinc-400 max-w-4xl my-10 mx-auto;
   }
 
   .flex-between {
@@ -61,35 +64,27 @@
     background-repeat: repeat-x;
   }
 
-  .pink_container {
-    @apply w-full min-h-[530px] flex justify-center items-center flex-col py-10 px-6;
+  .heading_container {
+    @apply w-full min-h-[530px] flex justify-center items-center flex-col py-10 px-6 shadow-2xl;
     
-    background-color: rgb(60, 196, 124);
-    
-    background-image: linear-gradient(
-      to right,
-      transparent 49.5%,
-      rgba(251, 232, 67, 0.2) 49.5%,
-      rgba(251, 232, 67, 0.6) 50.5%,
-      transparent 50.5%
-    );
-    background-size: 5% 100%;
-    background-position: center;
-    background-repeat: repeat-x;
+    background-color: rgb(21, 21, 21);
   }
 
   .heading{
     font-family: var(--font-work-sans);
-    @apply uppercase bg-black px-6 py-3 font-extrabold text-white sm:text-[54px] sm:leading-[64px] text-[36px] leading-[46px] text-center my-5
+    border: solid;
+    border-color: rgb(60, 196, 124);
+    color: rgb(60, 196, 124);
+    @apply uppercase px-6 py-3 font-extrabold sm:text-[54px] sm:leading-[64px] text-[36px] leading-[46px] text-center my-5
   }
 
   .no-result {
     font-family: var(--font-work-sans);
-    @apply text-black text-sm font-normal;
+    @apply text-gray-500 text-sm font-normal;
   }
 
   .profile_card {
-    @apply w-full px-6 pb-6 pt-20 flex flex-col justify-center items-center bg-pink-500 border-[5px] border-black shadow-lg rounded-[30px] relative z-0 h-fit;
+    @apply w-full px-6 pb-6 pt-20 flex flex-col justify-center items-center bg-[rgb(10,10,10)] shadow-lg rounded-[30px] relative z-0 h-fit border-[rgb(60,196,124)] border-[5px];
   }
 
   .profile_container {
@@ -98,23 +93,25 @@
 
   .profile_title {
     font-family: var(--font-work-sans);
-    @apply w-11/12 font-extrabold bg-white border-[5px] border-black rounded-[20px] px-5 py-3 absolute -top-9 after:absolute after:content-[''] after:-top-1 after:right-0 after:-skew-y-1 after:bg-black after:-z-[1] after:rounded-[20px] after:w-full after:h-[60px] before:absolute before:content-[''] before:-bottom-1 before:left-0  before:-skew-y-1 before:w-full before:h-[60px] before:bg-black  before:-z-[1] before:rounded-[20px] shadow-xl;
+    @apply text-[rgba(255,255,255,0.8)] w-11/12 font-extrabold bg-[rgb(10,10,10)] border-[5px] border-[rgb(60,196,124)] rounded-bl-[20px] rounded-tr-[20px] px-5 py-3 absolute -top-9 after:absolute after:content-[''] after:-top-1 after:right-0 after:-skew-y-1 after:bg-black after:-z-[1] after:rounded-[20px] after:w-full after:h-[60px] before:absolute before:content-[''] before:-bottom-1 before:left-0  before:-skew-y-1 before:w-full before:h-[60px] before:bg-black  before:-z-[1] before:rounded-[20px] shadow-xl;
   }
 
   .profile_image {
-    @apply rounded-full object-cover border-[3px] border-black;
+    @apply rounded-full object-cover border-[10px] border-[rgb(60,196,124)];
   }
+
   .sub-heading {
     font-family: var(--font-work-sans);
-    @apply font-medium text-[20px] text-white max-w-2xl text-center break-words;
+    color: rgba(255,255,255,0.8);
+    @apply font-medium text-[20px] max-w-2xl text-center break-words;
   }  
 
   .search-form {
-    @apply max-w-3xl w-full min-h-[80px] bg-white border-[5px] border-black rounded-[80px] text-[24px] mt-8 px-5 flex flex-row items-center gap-5;
+    @apply max-w-2xl w-full min-h-[65px] bg-white rounded-[80px] text-[24px] mt-8 px-5 flex flex-row items-center gap-5;
   }
 
   .search-btn {
-    @apply size-[50px] rounded-full bg-black flex justify-center items-center;
+    @apply size-[40px] rounded-full bg-black flex justify-center items-center;
   }
 
   .section_container {
@@ -124,12 +121,17 @@
 
   .search-input {
     font-family: var(--font-work-sans);
-    @apply flex-1 font-bold placeholder:font-semibold placeholder:text-black w-full h-auto outline-none text-black;
+    @apply flex-1 font-bold placeholder:font-semibold placeholder:text-gray-500 w-full h-auto outline-none text-black;
   }
 
   .startup-card {
-    @apply bg-white border-[5px] border-black py-6 px-5 rounded-[22px] hover:border-pink-500 transition-all duration-200 hover:shadow-xl hover:bg-pink-700 text-black hover:text-white;
+    background-color: rgb(10, 10, 10);
+    color: rgb(29,185,84);
+    border-color: black;
+    @apply border-[3px] border-[rgb(29,185,84)] py-6 px-5 rounded-[22px] transition-all duration-200 text-[rgb(29,185,84)] shadow-xl;
   }
+
+  
 
   .startup-card_desc {
     font-family: var(--font-work-sans);
@@ -137,37 +139,39 @@
   }
 
   .startup-card_img {
-    @apply w-full h-[164px] rounded-[10px] object-cover;
+    @apply w-full h-[164px] rounded-[10px] object-cover duration-200;
   }
 
   .startup-card_btn {
     font-family: var(--font-work-sans);
-    @apply rounded-full bg-black font-medium text-[16px] text-white px-5 py-3;
+    @apply rounded-full bg-black font-medium text-[16px] text-white px-5 py-3 hover:-translate-y-0.5 active:translate-none shadow-sm hover:shadow-none;
   }
 
   .startup-form {
-    @apply max-w-2xl mx-auto bg-white my-10 space-y-8 px-6;
+    @apply max-w-2xl mx-auto bg-[rgb(18,18,18)] my-10 space-y-8 px-6;
   }
 
   .startup-form_btn {
     font-family: var(--font-work-sans);
-    background-color: #EE2B69;
-    @apply border-[4px] border-black rounded-full p-5 min-h-[70px] w-full font-bold text-[18px];
+    background-color: rgb(29,185,84);
+    @apply border-[3px] border-black rounded-full p-5 min-h-[70px] w-full font-bold text-[18px];
   }
 
   .startup-form_label {
     font-family: var(--font-work-sans);
-    @apply font-bold text-[18px] text-black uppercase;
+    @apply font-bold text-[18px] text-[rgb(60,196,124)] uppercase;
   }
 
   .startup-form_input {
     font-family: var(--font-work-sans);
-    @apply border-[3px] border-black px-5 py-7 text-[18px] text-black font-semibold rounded-full mt-3 placeholder:text-gray-400;
+    border-color: rgb(29,185,84);
+    @apply border-[3px] px-5 py-4 text-[18px] text-black font-semibold rounded-full mt-3 placeholder:text-gray-500 placeholder:font-semibold bg-white focus:outline-none duration-200;
   }
 
   .startup-form_textarea {
     font-family: var(--font-work-sans);
-    @apply border-[3px] border-black p-5 text-[18px] text-black font-semibold rounded-[20px] mt-3 placeholder:text-gray-500;
+    border-color: rgb(29,185,84);
+    @apply border-[3px] p-5 text-[18px] text-black font-semibold rounded-[20px] mt-3 placeholder:text-gray-500 bg-white focus:outline-none focus:border-none;
   }
 
   .tag {
@@ -185,6 +189,6 @@
 
   .view-text {
     font-family: var(--font-work-sans);
-    @apply font-medium text-[16px] bg-pink-100 px-4 py-2 rounded-lg capitalize;
+    @apply font-medium text-[16px] bg-[rgb(164,235,189)] px-4 py-2 rounded-lg capitalize;
   }
 }

@@ -14,7 +14,7 @@ const StartupCard = ({prop}: {prop: StartupTypeCard}) => {
     return (
     <li className='startup-card shadow-xs'>
         <div className="flex-between">
-            <p>{formatDate(_createdAt)}</p>
+            <p className='text-yellow-500'>{formatDate(_createdAt)}</p>
         
             <div className="flex gap-1 5">
                 <EyeIcon className='size-6 text-primary'></EyeIcon>
@@ -25,7 +25,7 @@ const StartupCard = ({prop}: {prop: StartupTypeCard}) => {
         <div className="flex-between mt-5 gap5">
           <div className="flex-1">
             <Link href={`/user/${author?._id}`}>
-              <p className="text-[16px] font-bold line-clamp-1">
+              <p className="text-[16px] text-white font-bold line-clamp-1">
                 {author?.name}
               </p>
             </Link>
@@ -41,17 +41,22 @@ const StartupCard = ({prop}: {prop: StartupTypeCard}) => {
           </Link>
         </div>
 
-        <Link href={`/startup/${_id}`}>
-          <p className="startup-card_desc">
-            {description}
-          </p>
-
-          <img src={image} alt="placeholder" className='startup-card_img'/>
+        <Link href={`/startup/${_id}`} className='block overflow-hidden group'>
+        <p className="startup-card_desc text-white">
+          {description}
+        </p>
+          <div className="overflow-hidden rounded-[10px]">
+            <img
+              src={image}
+              alt="Image"
+              className="transition-transform duration-500 hover:scale-105 startup-card_img"
+            />
+          </div>
         </Link>
 
         <div className="flex-between gap-3 mt-5">
           <Link href={`/?query=${category?.toLowerCase()}`}>
-            <p className='text-[16px] text-medium'>
+            <p className='text-[16px] font-medium bg-[rgb(29,185,84)] text-[rgb(10,10,10)] p-2 px-3 rounded-bl-xl rounded-tr-xl hover:-translate-y-0.5 duration-200 active:translate-none'>
               {category}
             </p>
           </Link>

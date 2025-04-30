@@ -14,11 +14,13 @@ const md = markdownit();
 const page = async ({params}: {params: Promise<{id: string}>}) => {
   const id = (await params).id
 
-  const post = await client.fetch(STARTUP_BY_ID_QUERY, {id});
+  //Example of a parallel request:
+  const [post, { select: editorPosts }] = await Promise.all([
+    await client.fetch(STARTUP_BY_ID_QUERY, {id}),
+    await client.fetch(PLAYLIST_BY_SLUG_QUERY, {slug: 'editor-picks'})
+  ])
 
   if(!post) return notFound();
-
-  const { select: editorPosts } = await client.fetch(PLAYLIST_BY_SLUG_QUERY, {slug: 'editor-picks'})
 
   const parsedContent = md.render(post?.pitch || null);
 
@@ -26,7 +28,7 @@ const page = async ({params}: {params: Promise<{id: string}>}) => {
 
   return (
     <div>
-      <section className="pink_container !min-h-[230px]">
+      <section className="heading_container !min-h-[230px]">
         <p className="tag">{formatDate(post?._createdAt)}</p>
       
         <h1 className='heading'>{post.title}</h1>
@@ -39,22 +41,22 @@ const page = async ({params}: {params: Promise<{id: string}>}) => {
         
         <div className="space-y-5 mt-10 max-w-4xl mx-auto">
             <div className="flex-between gap-5">
-                <Link href={`/user/${post.author?.id}`} className='flex gap-2 items-center mb-3'>
-                    <img src={post.author.image} alt="avatar" width={64} height={64} className='rounded-full shadow-lg'/>
+                <Link href={`/user/${post.author?.id}`} className='flex gap-2 items-center mb-3 hover:-translate-y-0.5 hover:shadow-xl p-5 rounded-b-xl duration-150'>
+                    <img src={post.author.image} alt="avatar" width={64} height={64} className='rounded-full shadow-lg me-2'/>
                 
                     <div>
-                        <p className='text-[20px] font-work-sans font-medium'>{post?.author?.name}</p>
-                        <p className='text-[20px] font-work-sans font-medium text-gray-500'>@{post?.author?.username}</p>
+                        <p className='text-[20px] font-work-sans font-medium text-white text-shadow-lg'>{post?.author?.name}</p>
+                        <p className='text-[17px] font-work-sans font-normal text-gray-500'>@{post?.author?.username}</p>
                     </div>
                 </Link>
 
                 <p className="category-tag">{post?.category}</p>
             </div>
 
-            <h3 className='text-[30px] font-bold'>Pitch Details</h3>
+            <h3 className='text-[30px] font-bold text-center text-[rgb(29,185,84)]'>Pitch Details</h3>
 
             {parsedContent ? (
-                <article className='prose max-w-4xl font-work-sans break-all' dangerouslySetInnerHTML={{__html: parsedContent}}/>
+                <article className='prose prose-invert max-w-4xl font-work-sans break-all' dangerouslySetInnerHTML={{__html: parsedContent}}/>
             ) : (
                 <p className="no-result">No Details Provided...</p>
             )}
@@ -64,7 +66,7 @@ const page = async ({params}: {params: Promise<{id: string}>}) => {
 
         {editorPosts?.length > 0 && (
           <div className='max-w-4xl mx-auto'>
-            <p className="font-semibold text-[30px]">
+            <p className="font-semibold text-[30px] text-[rgb(29,185,84)]">
               Editor Picks
             </p>
 

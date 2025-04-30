@@ -19,7 +19,7 @@ const page = async ({params}: {params: Promise<{id: string}>}) => {
       <section className="profile_container">
         <div className="profile_card">
           <div className="profile_title">
-            <h3 className='text-[24px] text-black uppercase text-center line-clamp-1'>
+            <h3 className='text-[24px] uppercase text-center line-clamp-1'>
               {user?.name}
             </h3>
           </div>
@@ -32,17 +32,19 @@ const page = async ({params}: {params: Promise<{id: string}>}) => {
             className='profile_image'
           />
 
-          <p className='text-[30px] font-extrabold mt-7 text-center'>
-            @{user?.username}
+          <p className='text-[30px] font-extrabold mt-7 text-center text-[rgba(255,255,255,0.8)]'>
+            {user?.username == "" ? "" : `@${user.username}`}
           </p>
-          <p className="mt-1 text-center text-[14px] font-normal">
-            {user?.bio}
+          <p className="mt-1 text-center text-[14px] font-normal text-gray-300">
+            {user?.bio ?? "Bio"}
           </p>
         </div>
 
-        <div className="flex-1 flex flex-col gap-5 lg:mt-5">
-          <p className='text-[30px] font-bold'>
-            {session.id == id ? "Your" : "All"} Startups
+        <hr className='text-[rgb(10,10,10)]'/>
+
+        <div className="flex-1 flex flex-col gap-5 lg:mt-2">
+          <p className='text-[30px] font-bold text-[rgba(255,255,255,0.8)] mb-5'>
+            {session?.id == id ? "Your" : "All"} Startups
           </p>
 
           <ul className='card_grid-sm'>

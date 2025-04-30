@@ -46,9 +46,9 @@ export default async function Home({searchParams}: {
 
   return (
     <>
-      <section className="pink_container">
+      <section className="heading_container">
       
-        <h1 className="heading">This is just a testing text</h1>
+        <h1 className="heading">Dreams in draft — discover them first.</h1>
       
         <p className="sub-heading !max-w-3xl">
           Submit Ideas, Vote on Pitches, and Get Noticed in Virtual Competitions.
@@ -58,7 +58,7 @@ export default async function Home({searchParams}: {
       </section>
 
       <section className="section_container">
-        <p className="text-semibold text-[30px] text-black">
+        <p className="font-semibold text-[30px] text-white">
           {query ? `Search results for "${query}"` : 'All Startups'}
         </p>
 
@@ -68,7 +68,7 @@ export default async function Home({searchParams}: {
               <StartupCard key={item?._id} prop={item}/>
             ))
           ) : (
-            <p className="no-result">No startups</p>
+            <p className="no-result text-white">That startup don't exist yet...</p>
           )}
         </ul>
       </section>

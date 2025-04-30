@@ -14,7 +14,7 @@ import { useRouter } from 'next/navigation';
 
 const StartupForm = () => {
   const [errors, setErrors] = useState<Record<string,string>>({});
-  const [pitch, setPitch] = useState("**Testing, test!!!**")
+  const [pitch, setPitch] = useState("");
   
   const router = useRouter()
 
@@ -68,7 +68,7 @@ const StartupForm = () => {
   return (
   <form action={formAction} className='startup-form'>
     <div className='flex flex-col'>
-        <label htmlFor="title" className='startup-form_label'>Testing</label>
+        <label htmlFor="title" className='startup-form_label'>Title</label>
         <input 
           id="title" 
           name='title'
@@ -128,7 +128,7 @@ const StartupForm = () => {
           id="pitch"
           preview='edit'
           height={300}
-          style={{borderRadius:20, overflow:"hidden"}}
+          style={{borderRadius:20, overflow:"hidden", padding: "15px", margin: "10px 0px 0px"}}
           textareaProps={{
             placeholder:
               "Briefly describe your idea and what problem it solves..."
