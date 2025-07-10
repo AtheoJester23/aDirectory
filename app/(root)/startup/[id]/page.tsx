@@ -8,10 +8,15 @@ import markdownit from 'markdown-it'
 import { Skeleton } from '@/components/ui/skeleton'
 import View from '@/components/View'
 import StartupCard, { StartupTypeCard } from '@/components/StartupCard'
+import { Trash } from 'lucide-react'
+import ActionButtons from '@/components/ActionButtons'
+import { auth } from '@/auth'
 
 const md = markdownit();
 
 const page = async ({params}: {params: Promise<{id: string}>}) => {
+  const session = await auth();
+  
   const id = (await params).id
 
   //Example of a parallel request:
@@ -26,11 +31,17 @@ const page = async ({params}: {params: Promise<{id: string}>}) => {
 
   console.log("This is the id: ", post.author);
 
+  const handleDelete = () => {
+    console.log("testing")
+  }
+
   return (
     <div>
       <section className="heading_container !min-h-[230px]">
         <p className="tag">{formatDate(post?._createdAt)}</p>
-      
+        
+        {post.author.id === session.id && <ActionButtons id={id}/>}
+
         <h1 className='heading'>{post.title}</h1>
         <p className="sub-heading !max-w-5xl">{post.description}</p>
 

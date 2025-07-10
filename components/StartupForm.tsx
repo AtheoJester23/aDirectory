@@ -15,7 +15,19 @@ import { useRouter } from 'next/navigation';
 const StartupForm = () => {
   const [errors, setErrors] = useState<Record<string,string>>({});
   const [pitch, setPitch] = useState("");
+  const [improvedPitch, setImprovedPitch] = useState("");
+
+  const improvePitch = async () => {
+    const res = await fetch('/api/AI',{
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({pitchText: "Can you give me a startup idea about self improvment website?"})
+    });
   
+    const data = await res.json();
+    setImprovedPitch(data.improvedPitch);
+  }
+
   const router = useRouter()
 
   const handleFormSubmit = async (prevState: any, formData: FormData) => {
@@ -141,7 +153,15 @@ const StartupForm = () => {
     <Button type='submit' className='startup-form_btn hover:cursor-pointer hover:text-white -translate-y-1 hover:translate-none duration-200 shadow-xl hover:shadow-none' disabled={isPending}>
       {isPending ? "Submitting..." : "Submit your pitch"}
     </Button>
-  </form>)
+
+    {improvedPitch && (
+      <div className="mt-2 p-2 bg-gray-100 rounded">
+        <p className="font-semibold">AI Suggestion:</p>
+        <p>{improvedPitch}</p>
+      </div>
+    )}
+  </form>
+  )
 }
 
 export default StartupForm
