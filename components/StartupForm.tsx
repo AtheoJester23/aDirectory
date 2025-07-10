@@ -11,11 +11,37 @@ import { z } from 'zod'
 import { toast } from 'sonner';
 import { createPitch } from '@/lib/actions';
 import { useRouter } from 'next/navigation';
+import { UpdatePitch } from '@/actions/updateAction';
 
-const StartupForm = () => {
+export type pitchData = {
+  author: {
+    bio: string,
+    id: string,
+    image: string,
+    name: string,
+    username: string,
+    _id: string
+  },
+  category: string,
+  description: string,
+  image: string,
+  pitch: string,
+  slug: {
+    _type: string,
+    current: string
+  },
+  title: string,
+  views: number,
+  _createdAt: string,
+  _id: string
+}
+
+const StartupForm = ({data}: {data: pitchData | null}) => {
   const [errors, setErrors] = useState<Record<string,string>>({});
-  const [pitch, setPitch] = useState("");
+  const [pitch, setPitch] = useState(data ? data.pitch : "");
   const [improvedPitch, setImprovedPitch] = useState("");
+
+  console.log(data);
 
   const improvePitch = async () => {
     const res = await fetch('/api/AI',{
@@ -72,7 +98,49 @@ const StartupForm = () => {
     }
   }
 
-  const [state, formAction, isPending] = useActionState(handleFormSubmit, {
+  const handleUpdate = async (prevState: any, formData: FormData) => {
+    try {
+      const formValues = {
+        title: formData.get("title") as string,
+        description: formData.get("description") as string,
+        category: formData.get("category") as string,
+        link: formData.get("link") as string,
+        pitch,
+      }
+
+      await formSchema.parseAsync(formValues);
+
+      console.log(formValues);
+
+      const response = await UpdatePitch(prevState, formData, pitch, data?._id!);
+
+      toast.success("Upload Successful",{
+        description: "Your startup pitch has been uploaded"
+      })
+
+      router.push(`/startup/${response._id}`)
+    } catch (error) {
+      if(error instanceof z.ZodError){
+        const fieldErrors = error.flatten().fieldErrors;
+
+        setErrors(fieldErrors as unknown as Record<string, string>);
+      
+        toast.error("Error",{
+          description: "Please check your inputs and try again..."
+        })
+
+        return {...prevState, error: "Validation failed", status: "ERROR" }
+      }
+
+      toast.error("Error",{
+        description: "Unexpected error has occured"
+      })
+
+      return {...prevState, error: "Validation failed", status: "ERROR" }
+    }
+  }
+
+  const [state, formAction, isPending] = useActionState(data ? handleUpdate : handleFormSubmit, {
     error: "",
     status: "INITIAL",
   });
@@ -84,6 +152,7 @@ const StartupForm = () => {
         <input 
           id="title" 
           name='title'
+          defaultValue={data ? data.title : ""}
           className="startup-form_input"
           required
           placeholder='Startup Title'
@@ -97,6 +166,7 @@ const StartupForm = () => {
         <Textarea
           id="description" 
           name='description'
+          defaultValue={data ? data.description : ""}
           className="startup-form_textarea"
           required
           placeholder='Startup Description'
@@ -110,6 +180,7 @@ const StartupForm = () => {
         <input 
           id="category" 
           name='category'
+          defaultValue={data ? data.category : ""}
           className="startup-form_input"
           required
           placeholder='Startup Category(Tech, Health, Education, etc...)'
@@ -123,6 +194,7 @@ const StartupForm = () => {
         <input 
           id="link" 
           name='link'
+          defaultValue={data ? data.image : ""}
           className="startup-form_input"
           required
           placeholder='Startup Image URL'
@@ -150,9 +222,15 @@ const StartupForm = () => {
         {errors.pitch && <p className='startup-form_error'>{errors.pitch}</p>}
     </div>
 
-    <Button type='submit' className='startup-form_btn hover:cursor-pointer hover:text-white -translate-y-1 hover:translate-none duration-200 shadow-xl hover:shadow-none' disabled={isPending}>
-      {isPending ? "Submitting..." : "Submit your pitch"}
-    </Button>
+    {data ? (
+      <Button type='submit' className='startup-form_btn hover:cursor-pointer hover:text-white -translate-y-1 hover:translate-none duration-200 shadow-xl hover:shadow-none' disabled={isPending}>
+        {isPending ? "Updating..." : "Update Pitch"}
+      </Button>
+    ):(
+      <Button type='submit' className='startup-form_btn hover:cursor-pointer hover:text-white -translate-y-1 hover:translate-none duration-200 shadow-xl hover:shadow-none' disabled={isPending}>
+        {isPending ? "Submitting..." : "Submit your pitch"}
+      </Button>
+    )}
 
     {improvedPitch && (
       <div className="mt-2 p-2 bg-gray-100 rounded">

@@ -10,7 +10,7 @@ import { Dialog } from '@headlessui/react'
 function ActionButtons({id}: {id: string}) {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const router = useRouter();
-    
+
     const handleDelete = async () => {
         try {
             const response = await deletePitch(id);
@@ -40,7 +40,7 @@ function ActionButtons({id}: {id: string}) {
             <button className='bg-red-500 p-3 rounded-full -translate-y-1 hover:translate-none cursor-pointer duration-200' onClick={() => setIsOpen(true)}>
                 <Trash className="size-7 text-white"/>
             </button>
-            <button className='bg-blue-500 p-3 rounded-full -translate-y-1 hover:translate-none cursor-pointer duration-200' >
+            <button className='bg-blue-500 p-3 rounded-full -translate-y-1 hover:translate-none cursor-pointer duration-200' onClick={()=> router.push(`/startup/edit/${id}`)}>
                 <Pencil className="size-7 text-white"/>
             </button>
         </section>

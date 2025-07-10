@@ -14,7 +14,7 @@ const page = async () => {
         <h1 className="heading">Submit Your Startup Pitch</h1>
       </section>
 
-      <StartupForm/>
+      <StartupForm data={null}/>
     </>
   )
 }
