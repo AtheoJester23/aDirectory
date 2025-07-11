@@ -8,7 +8,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [Google],
   callbacks: {
     async signIn({ user, profile}){
-      if(!profile) return false;
+      if(!profile || !profile.sub) return false;
 
       const { sub: id, name, email, picture: image } = profile
 

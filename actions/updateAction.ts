@@ -1,11 +1,12 @@
 'use server'
 
 import { auth } from "@/auth";
+import { prevStateType } from "@/components/StartupForm";
 import { parseServerActionResponse } from "@/lib/utils";
 import { client } from "@/sanity/lib/client";
 import slugify from 'slugify'
 
-export async function UpdatePitch(state: any, formValues: FormData,  pitch: string,  id: string){
+export async function UpdatePitch(state: prevStateType, formValues: FormData,  pitch: string,  id: string){
     const session = await auth();
     
     if(!session){

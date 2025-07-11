@@ -7,8 +7,6 @@ import AuthButtons from './AuthButtons'
 const Navbar = async () => {
     const session = await auth();
 
-    console.log("This is the whole session: ",session)
-
     return (
         <header className='px-5 py-3 bg-[rgb(10,10,10)] shadow-sm font-work-sans'>
             <nav className="flex justify-between items-center px-5 py-2">

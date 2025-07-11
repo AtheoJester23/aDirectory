@@ -36,9 +36,12 @@ const StartupCard = ({prop}: {prop: StartupTypeCard}) => {
             </Link>
           </div>
 
-          <Link href={`/user/${author?._id}`}>
-            <Image src={author?.image!} alt={author?.name!} width={48} height={48} className='rounded-full'/>
-          </Link>
+          {author?.image && author?.name && (
+            <Link href={`/user/${author._id}`}>
+              <Image src={author.image} alt={author.name} width={48} height={48} className='rounded-full'/>
+            </Link>
+          )}
+
         </div>
 
         <Link href={`/startup/${_id}`} className='block overflow-hidden group'>
@@ -46,9 +49,12 @@ const StartupCard = ({prop}: {prop: StartupTypeCard}) => {
           {description}
         </p>
           <div className="overflow-hidden rounded-[10px]">
-            <img
-              src={image}
+            <Image
+              src={image!}
               alt="Image"
+              width={0}
+              height={0}
+              sizes="100vw"
               className="transition-transform duration-500 hover:scale-105 startup-card_img"
             />
           </div>

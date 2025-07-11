@@ -3,7 +3,7 @@ import UserStartups from '@/components/UserStartups';
 import { client } from '@/sanity/lib/client';
 import { AUTHOR_BY_GOOGLE_ID_QUERY } from '@/sanity/lib/queries';
 import Image from 'next/image';
-import { notFound, redirect } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import React from 'react'
 
 const page = async ({params}: {params: Promise<{id: string}>}) => {

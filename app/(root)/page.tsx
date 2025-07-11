@@ -2,7 +2,6 @@ import StartupCard, { StartupTypeCard } from "@/components/StartupCard";
 import SearchForm from "../../components/SearchForm";
 import { STARTUPS_QUERY } from "@/sanity/lib/queries";
 import { sanityFetch, SanityLive } from "@/sanity/lib/live";
-import { auth } from "@/auth";
 
 export default async function Home({searchParams}: {
   searchParams: Promise<{query ?: string}>
@@ -11,8 +10,6 @@ export default async function Home({searchParams}: {
   const query = (await searchParams).query
 
   const params = {search: query || null}
-
-  const session = await auth();
 
   // live data fetching
   const {data: posts} = await sanityFetch({query: STARTUPS_QUERY, params});
@@ -68,7 +65,7 @@ export default async function Home({searchParams}: {
               <StartupCard key={item?._id} prop={item}/>
             ))
           ) : (
-            <p className="no-result text-white">That startup don't exist yet...</p>
+            <p className="no-result text-white">That startup don&apos;t exist yet...</p>
           )}
         </ul>
       </section>

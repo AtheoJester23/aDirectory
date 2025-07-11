@@ -3,20 +3,21 @@
 import { CirclePlus, LogOut} from "lucide-react";
 import { signIn, signOut } from "next-auth/react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import Link from "next/link";
 
 export default function AuthButtons({ isAuthenticated, userId, sessionImg }: { 
     isAuthenticated: boolean;
     userId?: string;
-    sessionImg: string;
+    sessionImg?: string | null;
 }) {
     return (
         <>
             {isAuthenticated ? (
                 <>
-                    <a href="/startup/create">
+                    <Link href="/startup/create">
                         <span className="max-sm:hidden text-[rgb(60,196,124)]">Create</span>
                         <CirclePlus className="size-6 sm:hidden"/>
-                    </a>
+                    </Link>
 
                     <button onClick={() => signOut({redirectTo: "/"})} className="text-white hover:cursor-pointer">
                         <span className="max-sm:hidden">Logout</span>
@@ -25,7 +26,7 @@ export default function AuthButtons({ isAuthenticated, userId, sessionImg }: {
 
                     <a href={`/user/${userId}`}>
                         <Avatar className="size-10">
-                            <AvatarImage src={sessionImg}/>
+                            <AvatarImage src={sessionImg!}/>
                             <AvatarFallback>AV</AvatarFallback>
                         </Avatar>
                     </a>

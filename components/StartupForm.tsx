@@ -4,7 +4,6 @@ import React, { useActionState, useState } from 'react'
 import { Textarea } from './ui/textarea';
 
 import MDEditor from '@uiw/react-md-editor';
-import { Send } from 'lucide-react';
 import { formSchema } from '@/lib/validation';
 import { Button } from './ui/button';
 import { z } from 'zod'
@@ -36,27 +35,20 @@ export type pitchData = {
   _id: string
 }
 
+export type prevStateType = {
+  error: string,
+  status: string
+}
+
 const StartupForm = ({data}: {data: pitchData | null}) => {
   const [errors, setErrors] = useState<Record<string,string>>({});
   const [pitch, setPitch] = useState(data ? data.pitch : "");
-  const [improvedPitch, setImprovedPitch] = useState("");
 
   console.log(data);
 
-  const improvePitch = async () => {
-    const res = await fetch('/api/AI',{
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({pitchText: "Can you give me a startup idea about self improvment website?"})
-    });
-  
-    const data = await res.json();
-    setImprovedPitch(data.improvedPitch);
-  }
-
   const router = useRouter()
 
-  const handleFormSubmit = async (prevState: any, formData: FormData) => {
+  const handleFormSubmit = async (prevState: prevStateType, formData: FormData): Promise<prevStateType> => {
     try {
       const formValues = {
         title: formData.get("title") as string,
@@ -76,7 +68,15 @@ const StartupForm = ({data}: {data: pitchData | null}) => {
 
       const result = await createPitch(prevState, formData, pitch);
 
+      console.log("This is prevState: ", prevState)
+
       router.push(`/startup/${result._id}`)
+
+      return {
+        ...prevState,
+        error: "",
+        status: "SUCCESS",
+      };
     } catch (error) {
       if(error instanceof z.ZodError){
         const fieldErrors = error.flatten().fieldErrors;
@@ -98,7 +98,7 @@ const StartupForm = ({data}: {data: pitchData | null}) => {
     }
   }
 
-  const handleUpdate = async (prevState: any, formData: FormData) => {
+  const handleUpdate = async (prevState: prevStateType, formData: FormData): Promise<prevStateType> => {
     try {
       const formValues = {
         title: formData.get("title") as string,
@@ -112,13 +112,21 @@ const StartupForm = ({data}: {data: pitchData | null}) => {
 
       console.log(formValues);
 
-      const response = await UpdatePitch(prevState, formData, pitch, data?._id!);
+      if (!data?._id) throw new Error("Missing pitch ID");
+
+      const response = await UpdatePitch(prevState, formData, pitch, data._id);
 
       toast.success("Upload Successful",{
         description: "Your startup pitch has been uploaded"
       })
 
       router.push(`/startup/${response._id}`)
+
+      return {
+        ...prevState,
+        error: "",
+        status: "SUCCESS",
+      };
     } catch (error) {
       if(error instanceof z.ZodError){
         const fieldErrors = error.flatten().fieldErrors;
@@ -140,7 +148,7 @@ const StartupForm = ({data}: {data: pitchData | null}) => {
     }
   }
 
-  const [state, formAction, isPending] = useActionState(data ? handleUpdate : handleFormSubmit, {
+  const [, formAction, isPending] = useActionState<prevStateType, FormData>(data ? handleUpdate : handleFormSubmit, {
     error: "",
     status: "INITIAL",
   });
@@ -232,12 +240,6 @@ const StartupForm = ({data}: {data: pitchData | null}) => {
       </Button>
     )}
 
-    {improvedPitch && (
-      <div className="mt-2 p-2 bg-gray-100 rounded">
-        <p className="font-semibold">AI Suggestion:</p>
-        <p>{improvedPitch}</p>
-      </div>
-    )}
   </form>
   )
 }

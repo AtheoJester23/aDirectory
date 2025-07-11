@@ -8,9 +8,9 @@ import markdownit from 'markdown-it'
 import { Skeleton } from '@/components/ui/skeleton'
 import View from '@/components/View'
 import StartupCard, { StartupTypeCard } from '@/components/StartupCard'
-import { Trash } from 'lucide-react'
 import ActionButtons from '@/components/ActionButtons'
 import { auth } from '@/auth'
+import Image from 'next/image'
 
 const md = markdownit();
 
@@ -31,16 +31,12 @@ const page = async ({params}: {params: Promise<{id: string}>}) => {
 
   console.log("This is the id: ", post.author);
 
-  const handleDelete = () => {
-    console.log("testing")
-  }
-
   return (
     <div>
       <section className="heading_container !min-h-[230px]">
         <p className="tag">{formatDate(post?._createdAt)}</p>
         
-        {post.author.id === session.id && <ActionButtons id={id}/>}
+        {post.author.id === session?.id && <ActionButtons id={id}/>}
 
         <h1 className='heading'>{post.title}</h1>
         <p className="sub-heading !max-w-5xl">{post.description}</p>
@@ -48,12 +44,12 @@ const page = async ({params}: {params: Promise<{id: string}>}) => {
       </section>
 
       <section className='section_container'>
-        <img src={post.image} alt='thumbnail' className='w-full h-auto rounded-xl'/>
+        <Image src={post.image} alt='thumbnail' className='w-full h-auto rounded-xl' width={0} height={0} sizes='100vw'/>
         
         <div className="space-y-5 mt-10 max-w-4xl mx-auto">
             <div className="flex-between gap-5">
                 <Link href={`/user/${post.author?.id}`} className='flex gap-2 items-center mb-3 hover:-translate-y-0.5 hover:shadow-xl p-5 rounded-b-xl duration-150'>
-                    <img src={post.author.image} alt="avatar" width={64} height={64} className='rounded-full shadow-lg me-2'/>
+                    <Image src={post.author.image} alt="avatar" width={64} height={64} className='rounded-full shadow-lg me-2'/>
                 
                     <div>
                         <p className='text-[20px] font-work-sans font-medium text-white text-shadow-lg'>{post?.author?.name}</p>
