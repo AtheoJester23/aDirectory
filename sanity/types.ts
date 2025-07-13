@@ -161,6 +161,14 @@ export type Startup = {
   category?: string;
   image?: string;
   pitch?: string;
+  upvotes?: Array<{
+    id?: string;
+    _key: string;
+  }>;
+  downvotes?: Array<{
+    id?: string;
+    _key: string;
+  }>;
 };
 
 export type Slug = {

@@ -32,7 +32,15 @@ export type pitchData = {
   title: string,
   views: number,
   _createdAt: string,
-  _id: string
+  _id: string,
+  upvotes: {
+    _key: string,
+    id: string
+  }[],
+  downvotes: {
+    _key: string,
+    id: string
+  }[]
 }
 
 export type prevStateType = {

@@ -1,10 +1,23 @@
 'use server'
 
 import { auth } from "@/auth";
-import { prevStateType } from "@/components/StartupForm";
+import { pitchData, prevStateType } from "@/components/StartupForm";
 import { parseServerActionResponse } from "@/lib/utils";
 import { client } from "@/sanity/lib/client";
+import { GitPullRequestCreateArrowIcon } from "lucide-react";
+import { nanoid } from "nanoid";
 import slugify from 'slugify'
+
+export type updvoteType = {
+    upvotes:{
+        _key: string,
+        id: string
+    }[],
+    downvotes: {
+        _key: string,
+        id: string
+    }[]
+}
 
 export async function UpdatePitch(state: prevStateType, formValues: FormData,  pitch: string,  id: string){
     const session = await auth();
@@ -55,5 +68,68 @@ export async function UpdatePitch(state: prevStateType, formValues: FormData,  p
             error: JSON.stringify(error),
             status: "ERROR"
         })
+    }
+}
+
+export async function updateVote(id: string, vote: updvoteType){
+    try {
+        const response = await client
+            .patch(id)
+            .set({upvotes: vote.upvotes, downvotes: vote.downvotes})
+            .commit();
+
+        return{success:true};
+    } catch (error) {
+        console.error('Update Vote Failed',error);
+        return {success: false, error: (error as Error).message}
+    }
+}
+
+export async function removeVote(id: string, vote: string, choice: string){
+    try {
+        const response = await client
+            .patch(id)
+            .unset([`${choice}[id==\"${vote}\"]`])
+            .commit();
+
+        return {success:true}
+    } catch (error) {
+        console.error("Update Vote Failed: ", error);
+        return {success: false, error: (error as Error).message}
+    }
+}
+
+export async function addVote(id: string, vote: string, choice: string){
+    try {
+        const response = await client
+            .patch(id)
+            .setIfMissing({ [choice]: [] })
+            .append(choice, [{_key: nanoid(), id: vote}])
+            .commit();
+    
+        return {success: true}
+    } catch (error) {
+        console.error("Update Vote Failed: ", error);
+        return {success: false, error: (error as Error).message}
+    }
+}
+
+export const changeVote = async (id: string, voter: string, choice: string) => {
+    
+    try {
+        if(choice == "upvotes"){
+            const [add, rem]= await Promise.all([
+                client.patch(id).setIfMissing({"upvotes": []}).append("upvotes", [{_key: nanoid(), id: voter}]).commit(),
+                client.patch(id).unset([`downvotes[id=="${voter}"]`]).commit()
+            ])
+        }else if(choice == "downvotes"){
+            const [add, rem]= await Promise.all([
+                client.patch(id).setIfMissing({"downvotes": []}).append("downvotes", [{_key: nanoid(), id: voter}]).commit(),
+                client.patch(id).unset([`upvotes[id=="${voter}"]`]).commit()
+            ])
+        }
+    } catch (error) {
+        console.error("Update Vote Failed: ", error)
+        return {success: false, error: (error as Error).message}
     }
 }

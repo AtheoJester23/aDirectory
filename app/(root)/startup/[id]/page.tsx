@@ -11,6 +11,7 @@ import StartupCard, { StartupTypeCard } from '@/components/StartupCard'
 import ActionButtons from '@/components/ActionButtons'
 import { auth } from '@/auth'
 import Image from 'next/image'
+import Votes from '@/components/Votes'
 
 const md = markdownit();
 
@@ -46,7 +47,9 @@ const page = async ({params}: {params: Promise<{id: string}>}) => {
       <section className='section_container'>
         <Image src={post.image} alt='thumbnail' className='w-full h-auto rounded-xl' width={0} height={0} sizes='100vw'/>
         
-        <div className="space-y-5 mt-10 max-w-4xl mx-auto">
+        <Votes data={post} id={session?.id ?? null}/>
+
+        <div className="space-y-5 max-w-4xl mx-auto">
             <div className="flex-between gap-5">
                 <Link href={`/user/${post.author?.id}`} className='flex gap-2 items-center mb-3 hover:-translate-y-0.5 hover:shadow-xl p-5 rounded-b-xl duration-150'>
                     <Image src={post.author.image} alt="avatar" width={64} height={64} className='rounded-full shadow-lg me-2'/>

@@ -42,6 +42,40 @@ export const startup = defineType({
         defineField({
             name: 'pitch',
             type: 'markdown'
+        }),
+        defineField({
+            name: 'upvotes',
+            title: 'Upvotes',
+            type: 'array',
+            of: [
+                { 
+                    type: 'object',
+                    fields: [
+                        defineField({
+                            name: 'id',
+                            type: 'string'
+                        })
+                    ]
+                    
+                }
+            ]
+        }),
+        defineField({
+            name: 'downvotes',
+            title: 'Downvotes',
+            type: 'array',
+            of: [
+                { 
+                    type: 'object',
+                    fields: [
+                        defineField({
+                            name: 'id',
+                            type: 'string'
+                        })
+                    ]
+                    
+                }
+            ]
         })
     ],
 })
