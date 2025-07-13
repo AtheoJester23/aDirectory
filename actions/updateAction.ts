@@ -1,10 +1,9 @@
 'use server'
 
 import { auth } from "@/auth";
-import { pitchData, prevStateType } from "@/components/StartupForm";
+import { prevStateType } from "@/components/StartupForm";
 import { parseServerActionResponse } from "@/lib/utils";
 import { client } from "@/sanity/lib/client";
-import { GitPullRequestCreateArrowIcon } from "lucide-react";
 import { nanoid } from "nanoid";
 import slugify from 'slugify'
 
@@ -17,6 +16,15 @@ export type updvoteType = {
         _key: string,
         id: string
     }[]
+}
+
+export type commentType = {
+    _key: string,
+    author:{
+        _type: string,
+        _ref: string | null,
+    }
+    comment: string
 }
 
 export async function UpdatePitch(state: prevStateType, formValues: FormData,  pitch: string,  id: string){
@@ -128,6 +136,21 @@ export const changeVote = async (id: string, voter: string, choice: string) => {
                 client.patch(id).unset([`upvotes[id=="${voter}"]`]).commit()
             ])
         }
+    } catch (error) {
+        console.error("Update Vote Failed: ", error)
+        return {success: false, error: (error as Error).message}
+    }
+}
+
+export async function addComment(id: string, comment: commentType){
+    try {
+        const response = await client
+            .patch(id)
+            .setIfMissing({comments: []})
+            .append("comments", [comment])
+            .commit()
+        
+        return {success: true}
     } catch (error) {
         console.error("Update Vote Failed: ", error)
         return {success: false, error: (error as Error).message}

@@ -76,6 +76,27 @@ export const startup = defineType({
                     
                 }
             ]
+        }),
+        defineField({
+            name: 'comments',
+            title: 'Comments',
+            type: 'array',
+            of: [
+                { 
+                    type: 'object',
+                    fields: [
+                        defineField({
+                            name: 'author',
+                            type: 'reference',
+                            to: {type: 'author'}
+                        }),
+                        defineField({
+                            name: 'comment',
+                            type: 'string'
+                        })
+                    ]
+                }
+            ]
         })
     ],
 })

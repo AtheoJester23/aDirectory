@@ -40,6 +40,14 @@ export type pitchData = {
   downvotes: {
     _key: string,
     id: string
+  }[],
+  comments: {
+    author: {
+      id: string,
+      image: string,
+      name: string
+    },
+    comment: string
   }[]
 }
 

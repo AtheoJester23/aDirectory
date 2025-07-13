@@ -12,6 +12,7 @@ import ActionButtons from '@/components/ActionButtons'
 import { auth } from '@/auth'
 import Image from 'next/image'
 import Votes from '@/components/Votes'
+import Comments from '@/components/Comments'
 
 const md = markdownit();
 
@@ -30,7 +31,7 @@ const page = async ({params}: {params: Promise<{id: string}>}) => {
 
   const parsedContent = md.render(post?.pitch || null);
 
-  console.log("This is the id: ", post.author);
+  console.log("This is the session: ", session ?? "");
 
   return (
     <div>
@@ -70,6 +71,12 @@ const page = async ({params}: {params: Promise<{id: string}>}) => {
             ) : (
                 <p className="no-result">No Details Provided...</p>
             )}
+        </div>
+
+        <hr className="divider"/>
+
+        <div className='max-w-4xl mx-auto'>
+          <Comments data={post} session={session ?? null}/>
         </div>
 
         <hr className="divider"/>
