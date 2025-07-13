@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 import { pitchData } from './StartupForm'
 import { nanoid } from 'nanoid'
 import { signIn } from 'next-auth/react'
-import { addVote, changeVote, removeVote, updateVote } from '@/actions/updateAction'
+import { addVote, changeVote, removeVote} from '@/actions/updateAction'
 
 const Votes = ({data, id}: {data: pitchData, id: string | null}) => {
   const [pitchStartup, setPitchStartup] = useState<pitchData>(data);
@@ -26,11 +26,7 @@ const Votes = ({data, id}: {data: pitchData, id: string | null}) => {
             setPicked("agree");
             const addUpVote = {...pitchStartup, upvotes: [{_key: nanoid(), id}]}
 
-
             setPitchStartup(addUpVote);
-            const votes = {upvotes: addUpVote.upvotes, downvotes: addUpVote.downvotes}
-            // updateVote(data._id, votes);
-
             addVote(data._id, id, "upvotes");
 
             console.log(addUpVote);
@@ -42,7 +38,6 @@ const Votes = ({data, id}: {data: pitchData, id: string | null}) => {
             setDownvotecount(downvoteCount - 1);
             setPicked("agree");
             const addRem = {...pitchStartup, upvotes: [{_key: nanoid(), id}], downvotes: pitchStartup.downvotes.filter(item => item.id != id)}
-            const votes = {upvotes: addRem.upvotes, downvotes: addRem.downvotes}
 
             //add upvote and remove downvote
             setPitchStartup(addRem);
@@ -60,8 +55,7 @@ const Votes = ({data, id}: {data: pitchData, id: string | null}) => {
             const addNew = {...pitchStartup, upvotes: [...pitchStartup.upvotes, {_key: nanoid(), id}]}
             setPitchStartup(addNew);
             
-            const votes = {upvotes: addNew.upvotes, downvotes: addNew.downvotes}
-            updateVote(data._id, votes);
+            addVote(data._id, id, "upvotes");
 
             console.log({...pitchStartup, upvotes: [...pitchStartup.upvotes, {_key: nanoid(), id}]});
         
@@ -87,7 +81,6 @@ const Votes = ({data, id}: {data: pitchData, id: string | null}) => {
             setDownvotecount(downvoteCount - 1);
             setPicked("agree");
             const addRem3 = {...pitchStartup, upvotes: [...pitchStartup.upvotes, {_key: nanoid(), id}], downvotes: pitchStartup.downvotes.filter(item => item.id != id)}
-            const votes = {upvotes: addRem3.upvotes, downvotes: addRem3.downvotes}
 
             //add upvote and remove downvote
             setPitchStartup(addRem3);
@@ -111,7 +104,6 @@ const Votes = ({data, id}: {data: pitchData, id: string | null}) => {
             setDownvotecount(downvoteCount + 1)
             setPicked("disagree")
             const addNewA = {...pitchStartup, downvotes: [{_key: nanoid(), id}]}
-            const votes = {upvotes: addNewA.upvotes, downvotes: addNewA.downvotes}
 
             setPitchStartup(addNewA);
             addVote(data._id, id, "downvotes");
@@ -123,7 +115,6 @@ const Votes = ({data, id}: {data: pitchData, id: string | null}) => {
             setDownvotecount(downvoteCount + 1);
             setPicked("disagree");
             const addRemA = {...pitchStartup, upvotes: pitchStartup.upvotes.filter(item => item.id != id), downvotes: [{_key: nanoid(), id}]}
-            const votes = {upvotes: addRemA.upvotes, downvotes: addRemA.downvotes}
 
             //add downvote and remove upvote
             setPitchStartup(addRemA);
@@ -161,7 +152,6 @@ const Votes = ({data, id}: {data: pitchData, id: string | null}) => {
             setDownvotecount(downvoteCount + 1);
             setPicked("disagree");
             const addRemC = {...pitchStartup, upvotes: pitchStartup.upvotes.filter(item => item.id != id), downvotes: [...pitchStartup.downvotes, {_key: nanoid(), id}]}
-            const votes = {upvotes: addRemC.upvotes, downvotes: addRemC.downvotes}
 
             //add downvote and remove upvote
             setPitchStartup(addRemC);
