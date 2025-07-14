@@ -1,7 +1,7 @@
 "use client"
 
 import { addComment, editComment} from '@/actions/updateAction'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { pitchData } from './StartupForm'
 import { nanoid } from 'nanoid'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
@@ -27,6 +27,35 @@ const Comments = ({data, session}: {data: pitchData, session: Session | null}) =
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedComment, setSelectedComment] = useState<{theSelected: string, theKey: string}>({theSelected: "", theKey: ""})
   const [currentEdit, setCurrentEdit] = useState<{_key: string, comment: string}>({_key: "", comment: ""})
+  const [listen, setListen] = useState(false)
+
+    useEffect(()=>{
+        const editChoice = document.getElementById(`${selectedComment.theSelected}`);
+        const iconButton = document.getElementById("ellipsisVert")
+
+        console.log("")
+        console.log("Icon Button: ")
+        console.log(iconButton);
+        console.log("")
+
+        const handleClick = (e: MouseEvent) => {
+            console.log(e.target);
+            console.log(listen);
+            if(e.target != editChoice){
+                editChoice?.classList.add("invisible")
+            }
+
+            setListen(false);
+            console.log("Turned to false")
+        };
+
+        document.addEventListener('click', handleClick);
+
+        // Cleanup on unmount or when `listen` becomes false
+        return () => {
+            document.removeEventListener('click', handleClick);
+        };
+    }, [listen, selectedComment.theSelected])
 
   const handleComment = (e: React.FormEvent<HTMLFormElement> | React.KeyboardEvent<HTMLTextAreaElement>) => {
     e.preventDefault();
@@ -84,10 +113,19 @@ const Comments = ({data, session}: {data: pitchData, session: Session | null}) =
   }
 
   const handleOptions = (selected: string, key: string) => {
-    console.log(selected)
+    setListen(true);
+
+    const prevSelected = document.getElementById(`${selectedComment.theSelected}`);
+    console.log("This is previous", prevSelected)
+
+    
+    prevSelected?.classList.add("invisible");
+
 
     const selectedOption = document.getElementById(`${selected}`);
     setSelectedComment({theSelected: selected, theKey: key})
+
+    console.log("This is present: ", selectedOption);
 
     if(selectedOption?.classList.contains("invisible")){
         selectedOption?.classList.remove("invisible");
@@ -103,11 +141,11 @@ const Comments = ({data, session}: {data: pitchData, session: Session | null}) =
   }
 
   const handleSaveEdit = (commentKey: string, comment: string) => {
+    editComment(data._id, commentKey, comment);
     const saveEdit = {...pitchStartup, comments: pitchStartup.comments.map(item => item._key == commentKey ? ({...item, comment, status: "Done"}) : item)}
     setPitchStartup(saveEdit);
     setCurrentEdit({_key: "", comment: ""});
 
-    editComment(data._id, commentKey, comment);
   }
 
   const handleDelete = () => {
