@@ -42,6 +42,7 @@ export type pitchData = {
     id: string
   }[],
   comments: {
+    _key: string,
     author: {
       id: string,
       image: string,

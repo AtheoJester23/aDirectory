@@ -191,4 +191,24 @@ body{
     font-family: var(--font-work-sans);
     @apply font-medium text-[16px] bg-[rgb(164,235,189)] px-4 py-2 rounded-lg capitalize;
   }
+
+  #moreOption{
+    @apply rounded-full p-2 cursor-pointer
+  }
+
+  .aComment{
+    @apply flex w-full items-center justify-between relative
+  }
+
+  .aComment:hover #ellipsisVert{
+    @apply text-white visible
+  }
+
+  .theOptions{
+    @apply flex flex-col py-2 bg-[rgb(23,23,23)] absolute right-[-20px] bottom-[-90px] z-2000
+  }
+
+  .optionChoice{
+    @apply px-5 py-2 text-white hover:bg-[rgb(30,30,30)] cursor-pointer
+  }
 }

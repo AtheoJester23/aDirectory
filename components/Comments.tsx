@@ -1,12 +1,15 @@
 "use client"
 
-import { addComment, commentType } from '@/actions/updateAction'
+import { addComment} from '@/actions/updateAction'
 import React, { useState } from 'react'
 import { pitchData } from './StartupForm'
 import { nanoid } from 'nanoid'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import Link from 'next/link'
 import { Session } from 'next-auth'
+import { EllipsisVertical, TriangleAlert } from 'lucide-react'
+import { Dialog } from '@headlessui/react'
+import { deleteComment } from '@/actions/deleteAction'
 
 export type sessionType = {
     expires: string,
@@ -21,6 +24,8 @@ export type sessionType = {
 const Comments = ({data, session}: {data: pitchData, session: Session | null}) => {
   const [pitchStartup, setPitchStartup] = useState<pitchData>(data)
   const [userComment, setUserComment] = useState("")
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [selectedComment, setSelectedComment] = useState<{theSelected: string, theKey: string}>({theSelected: "", theKey: ""})
 
   const handleComment = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -38,9 +43,10 @@ const Comments = ({data, session}: {data: pitchData, session: Session | null}) =
 
         try {
             addComment(data._id, comment)
+            setUserComment("")
 
             if(session.user){
-                const localPitch = {...pitchStartup, comments: [...(pitchStartup.comments ?? []), {author: {id: session.id, image: session.user.image ?? "", name: session.user.name ?? ""}, comment: userComment, }]}
+                const localPitch = {...pitchStartup, comments: [...(pitchStartup.comments ?? []), {_key: nanoid(),author: {id: session.id, image: session.user.image ?? "", name: session.user.name ?? ""}, comment: userComment, }]}
                 console.log(localPitch);
                 setPitchStartup(localPitch);
             }
@@ -50,7 +56,7 @@ const Comments = ({data, session}: {data: pitchData, session: Session | null}) =
             theComment.value = ""
         }
 
-        console.log(userComment);
+            console.log(userComment);
         }
   }
 
@@ -60,6 +66,51 @@ const Comments = ({data, session}: {data: pitchData, session: Session | null}) =
     const theComment = document.getElementById("comment") as HTMLTextAreaElement
 
     theComment.value = ""
+  }
+
+  const handleCancelDel = () => {
+    setIsOpen(false)
+    const theComment = document.getElementById(`${selectedComment.theSelected}`)
+
+    console.log(theComment);
+
+    if(theComment?.classList.contains("invisible")){
+        theComment?.classList.remove("invisible")
+    }else{
+        theComment?.classList.add("invisible")
+    }
+  }
+
+  const handleOptions = (selected: string, key: string) => {
+    console.log(selected)
+
+    const selectedOption = document.getElementById(`${selected}`);
+    setSelectedComment({theSelected: selected, theKey: key})
+
+    if(selectedOption?.classList.contains("invisible")){
+        selectedOption?.classList.remove("invisible");
+    }else{
+        selectedOption?.classList.add("invisible");
+    }
+  }
+
+  const handleDelete = () => {
+    console.log("delete button clicked...")
+
+    setIsOpen(false);
+
+    deleteComment(data._id, selectedComment.theKey);
+    setPitchStartup({...pitchStartup, comments: [...pitchStartup.comments.filter(item => item._key != selectedComment.theKey)]});
+
+    const theComment = document.getElementById(`${selectedComment.theSelected}`)
+
+    console.log(theComment);
+
+    if(theComment?.classList.contains("invisible")){
+        theComment?.classList.remove("invisible")
+    }else{
+        theComment?.classList.add("invisible")
+    }
   }
 
   return (
@@ -99,9 +150,24 @@ const Comments = ({data, session}: {data: pitchData, session: Session | null}) =
                                     <AvatarFallback>AV</AvatarFallback>
                                 </Avatar>
                             </Link>
-                            <div className='flex flex-col gap-1'>
-                                <Link href={`/user/${item.author.id}`} className="font-bold text-white">{item.author.name}</Link>
-                                <p className='text-white'>{item.comment}</p>
+                            <div className='aComment'>
+                                <div className='flex flex-col gap-1'>
+                                    <Link href={`/user/${item.author.id}`} className="font-bold text-white">{item.author.name}</Link>
+                                    <p className='text-white'>{item.comment}</p>
+                                </div>
+
+                                {item.author.id == session?.id && 
+                                    <>
+                                        <button onClick={()=>handleOptions(`theOptions${index}`, item._key)} id='moreOption'>
+                                            <EllipsisVertical id='ellipsisVert' className='text-gray-500'/>
+                                        </button>
+
+                                        <div className='theOptions invisible' id={`theOptions${index}`}>
+                                            <p className='optionChoice'>Edit</p>
+                                            <button onClick={()=> setIsOpen(true)} className='optionChoice'>Delete</button>
+                                        </div>
+                                    </>
+                                }
                             </div>
                         </li>
                     ))
@@ -110,6 +176,30 @@ const Comments = ({data, session}: {data: pitchData, session: Session | null}) =
         ):(
             <p className='text-gray-500 mt-5'>No comments yet...</p>
         )}
+
+        <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
+            <div className='fixed inset-0 bg-black/30'></div>
+
+            <div className='fixed inset-0 flex w-screen items-center justify-center p-4'>
+                <Dialog.Panel className="mx-auto max-w-sm rounded bg-white p-5 max-sm:w-[90%] sm:w-[50%]">
+                    <div className='flex justify-center flex-col items-center gap-3'>
+                        <TriangleAlert size={100} className='text-red-500'/>
+                        <div className='text-center'>
+                            <Dialog.Title className="text-2xl font-bold">Delete Comment</Dialog.Title>
+                            <Dialog.Description className="text-gray-500">Delete your comment permanently?</Dialog.Description>
+                        </div>
+                        <div className='flex gap-3'>
+                            <button 
+                                className='px-5 py-2 bg-red-500 text-white rounded-full cursor-pointer hover:bg-red-600 duration-200 -translate-y-0.25 hover:translate-none shadow hover:shadow-none' 
+                                onClick={() => handleDelete()}>
+                                    Delete
+                            </button>
+                            <button className='px-5 py-2 bg-gray-500 text-white rounded-full cursor-pointer hover:bg-gray-600 duration-200 -translate-y-0.25 hover:translate-none shadow hover:shadow-none' onClick={() => handleCancelDel()}>Cancel</button>
+                        </div>
+                    </div>
+                </Dialog.Panel>
+            </div>
+        </Dialog>
     </section>
   )
 }

@@ -169,6 +169,16 @@ export type Startup = {
     id?: string;
     _key: string;
   }>;
+  comments?: Array<{
+    author?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "author";
+    };
+    comment?: string;
+    _key: string;
+  }>;
 };
 
 export type Slug = {
