@@ -156,3 +156,16 @@ export async function addComment(id: string, comment: commentType){
         return {success: false, error: (error as Error).message}
     }
 }
+
+export async function editComment(id: string, commentKey: string, comment: string){
+    try {
+        const response = await client
+            .patch(id)
+            .set({[`comments[_key=="${commentKey}"].comment`]: comment})
+            .commit();
+        return {success: true}
+    } catch (error) {
+        console.error("Update comment status failed: ", error)
+        return{success: false, error: (error as Error).message}
+    }
+}

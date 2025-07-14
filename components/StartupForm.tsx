@@ -48,7 +48,8 @@ export type pitchData = {
       image: string,
       name: string
     },
-    comment: string
+    comment: string,
+    status: string
   }[]
 }
 

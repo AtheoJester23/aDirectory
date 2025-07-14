@@ -177,6 +177,7 @@ export type Startup = {
       [internalGroqTypeReferenceTo]?: "author";
     };
     comment?: string;
+    status?: string;
     _key: string;
   }>;
 };

@@ -93,6 +93,10 @@ export const startup = defineType({
                         defineField({
                             name: 'comment',
                             type: 'string'
+                        }),
+                        defineField({
+                            name: 'status',
+                            type: 'string'
                         })
                     ]
                 }
