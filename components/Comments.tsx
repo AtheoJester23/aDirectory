@@ -28,7 +28,7 @@ const Comments = ({data, session}: {data: pitchData, session: Session | null}) =
   const [selectedComment, setSelectedComment] = useState<{theSelected: string, theKey: string}>({theSelected: "", theKey: ""})
   const [currentEdit, setCurrentEdit] = useState<{_key: string, comment: string}>({_key: "", comment: ""})
 
-  const handleComment = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleComment = (e: React.FormEvent<HTMLFormElement> | React.KeyboardEvent<HTMLTextAreaElement>) => {
     e.preventDefault();
     const theComment = document.getElementById("comment") as HTMLTextAreaElement
 
@@ -105,6 +105,7 @@ const Comments = ({data, session}: {data: pitchData, session: Session | null}) =
   const handleSaveEdit = (commentKey: string, comment: string) => {
     const saveEdit = {...pitchStartup, comments: pitchStartup.comments.map(item => item._key == commentKey ? ({...item, comment, status: "Done"}) : item)}
     setPitchStartup(saveEdit);
+    setCurrentEdit({_key: "", comment: ""});
 
     editComment(data._id, commentKey, comment);
   }
@@ -143,6 +144,12 @@ const Comments = ({data, session}: {data: pitchData, session: Session | null}) =
                         // console.log(e.target.value)
 
                         setUserComment(e.target.value);
+                    }}
+                    onKeyDown={(e)=>{
+                        if(e.key == "Enter" && userComment != ""){
+                            e.preventDefault();
+                            handleComment(e)
+                        }
                     }}
                 ></textarea>
                 <div className='flex justify-end gap-1'>
@@ -201,6 +208,11 @@ const Comments = ({data, session}: {data: pitchData, session: Session | null}) =
                                             console.log(currentEdit);
                                             setCurrentEdit({_key: item._key, comment: e.target.value});
                                         }} 
+                                        onKeyDown={(e)=>{
+                                            if(e.key == "Enter" && currentEdit.comment.replace(/\s+/g, "") != ""){
+                                                handleSaveEdit(item._key, currentEdit.comment)
+                                            }
+                                        }}
                                         name={`editComm${index}`} 
                                         id={`editComm${index}`} 
                                         defaultValue={item.comment} 
