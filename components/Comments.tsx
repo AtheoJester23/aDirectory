@@ -39,7 +39,8 @@ const Comments = ({data, session}: {data: pitchData, session: Session | null}) =
                 _type: 'reference',
                 _ref: session.id
             },
-            comment: userComment 
+            comment: userComment,
+            status: "Done"
         };
 
         try {
@@ -47,7 +48,7 @@ const Comments = ({data, session}: {data: pitchData, session: Session | null}) =
             setUserComment("")
 
             if(session.user){
-                const localPitch = {...pitchStartup, comments: [...(pitchStartup.comments ?? []), {status: "done", _key: nanoid(),author: {id: session.id, image: session.user.image ?? "", name: session.user.name ?? ""}, comment: userComment, }]}
+                const localPitch = {...pitchStartup, comments: [...(pitchStartup.comments ?? []), {status: "Done", _key: nanoid(),author: {id: session.id, image: session.user.image ?? "", name: session.user.name ?? ""}, comment: userComment, }]}
                 console.log(localPitch);
                 setPitchStartup(localPitch);
             }
