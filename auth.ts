@@ -24,7 +24,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           name,
           email,
           image,
-          username: "", // Google doesn't provide this
+          username: name, // Google doesn't provide this
           bio: "",
         })
       }
